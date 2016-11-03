@@ -1,0 +1,17 @@
+sudo: required
+
+language: generic
+
+services:
+  - docker
+
+script:
+  - docker build -t lab41/nbhub .
+
+after_success:
+  - echo "TRAVIS_BRANCH\: $TRAVIS_BRANCH";
+    echo "TRAVIS_REPO_SLUG\: $TRAVIS_REPO_SLUG"
+  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_REPO_SLUG" == "Lab41/nbhub" ]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" &&
+      docker push lab41/nbhub;
+    fi
