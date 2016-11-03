@@ -22,6 +22,8 @@ JH_MIRROR_MOUNTS=
 # In-container path to user home directories parent
 # e.g. /mydata/home
 JH_USER_HOME=
+# URI of username map (JSON format)
+JH_USERNAME_MAP=
 
 # Container to spawn (?)
 CONTAINER_IMAGE=lab41/nbserver

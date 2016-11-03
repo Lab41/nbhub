@@ -1,15 +1,18 @@
+try:
+    import urllib.request as request
+except ImportError:
+    import six.moves.urllib.request as request
+
 from oauthenticator import GitHubOAuthenticator
 import ast
 
 class L41OAuthenticator(GitHubOAuthenticator):
-    username_map_file = '/docker_mnt/username_map'
-
+    username_map_uri = os.environ.get('JH_USERNAME_MAP', '')
     # Dynamically recreate username_map from file so that we cam change it while Jupyter Hub is running.
     # If username_map_file is mounted inside of the JupyterHub Docker container, we can edit it from the host.
     def get_username_map(self):
-        with open(self.username_map_file, 'r') as f:
-            lines = f.read()
-            username_map = ast.literal_eval(lines)
+        lines = request.urlopen(username_map_uri).read()
+        username_map = ast.literal_eval(lines)
         return username_map
 
     # At this point, username has already gone through normalize_username().
