@@ -1,0 +1,17 @@
+template(name="ForwardFormat" type="list") {
+    constant(value="{")
+    constant(value="\"prefix\":\"{{L41_LOGGING_TAG}}\", ")
+    constant(value="\"Image\":\"{{_docker_image}}\", ")
+    property(name="pri" outname="priority" format="jsonf")
+    constant(value=", ")
+    property(name="timestamp" outname="timestamp" format="jsonf")
+    constant(value=", ")
+    property(name="hostname" outname="hostname" format="jsonf")
+    constant(value=", ")
+    property(name="msg" outname="msg" format="json")
+    constant(value="}")
+    }
+
+
+*.* @@{{L41_RSYSLOG_HOST}}:{{L41_RSYSLOG_PORT}};ForwardFormat
+

@@ -1,0 +1,16 @@
+decorator==4.0.9
+docker-py==1.7.2
+dockerspawner==0.2.0
+escapism==0.0.1
+ipython-genutils==0.1.0
+Jinja2==2.8
+jupyterhub==0.5.0
+MarkupSafe==0.23
+oauthenticator==0.2.0
+pamela==0.2.1
+requests==2.9.1
+six==1.10.0
+SQLAlchemy==1.0.12
+tornado==4.3
+traitlets==4.2.1
+websocket-client==0.35.0

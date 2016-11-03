@@ -1,0 +1,57 @@
+# Authentication and basics ################
+# OAuth callback
+OAUTH_CALLBACK_URL=
+
+# Docker Swarm host (?)
+DOCKER_HOST=
+
+# GitHub auth
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+
+# default route (probably) and external IPs for JupyterHub node
+HUB_IP=
+HUB_IP_CONNECT=
+
+# Usernames of admin-privileged users, comma-separated
+JH_ADMIN_USERS=
+# Volume mirror paths
+# Paths specified here (comma-delimited) will be mounted to the same path
+# in container, e.g. "/foo" mounted to /foo
+JH_MIRROR_MOUNTS=
+# In-container path to user home directories parent
+# e.g. /mydata/home
+JH_USER_HOME=
+
+# Container to spawn (?)
+CONTAINER_IMAGE=lab41/nbserver
+
+# Private key and certificate
+SSL_KEY=
+SSL_CERT=
+
+# Logging config ###########################
+## Filebeats watches all children this directory
+L41_APPLICATION_DIRSPEC=/tmp/2/*
+## mkdir -p this
+L41_MAKE_DIR=/tmp/2
+
+# Add to all logged events
+L41_LOGGING_TAG=JupyterHUB
+# Logstash hostname and port
+L41_LOGSTASH_HOST=
+L41_LOGSTASH_PORT=
+# Rsyslog host and port
+L41_RSYSLOG_HOST=
+L41_RSYSLOG_PORT=
+
+# User setup ###############################
+L41_UID=1000
+L41_GID=100
+L41_GROUPNAME=jovyan
+
+L41_PASSWORD=
+L41_USER_GID=
+L41_USER_GROUP=
+L41_USERNAME=jovyan
+USE_INTERNAL_IP=False

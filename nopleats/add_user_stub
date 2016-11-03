@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+groupadd -g {{L41_GID}} {{L41_GROUPNAME}} 
+  useradd -m -s /bin/bash -u {{L41_UID}} -g {{L41_GID}} {{L41_USERNAME}} {{#L41_PASSWORD}} -p "{{L41_PASSWORD}}" {{/L41_PASSWORD}} && \
+  usermod -aG sudo {{L41_USERNAME}} && \
+  echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+
