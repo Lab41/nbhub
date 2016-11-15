@@ -151,6 +151,7 @@ class MarathonSpawner(Spawner):
     def stop(self):
         container_name = self.get_container_name()
         self.marathon.stop_container(container_name)
+        self.gpu_resources.release_resource(self.user.name)
 
     @gen.coroutine
     def get_ip_and_port(self):
