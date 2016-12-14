@@ -73,9 +73,19 @@ class MarathonSpawner(Spawner):
             USERID=self._user_id_default()
         )
 
-    def get_local_env(self):
+    def get_state(self):
+        state = super().get_state()
+        state['container_name'] = self.get_container_name()
+        return state
+
+    def load_state(self, state):
+        if 'container_name' in state:
+            pass
+     
+    def get_env(self):
         # TODO: Figure out why superclass call is failing
-        env = {}
+        #env = {}
+        env = super().get_env()
         env.update(dict(
             # User Info
             USER=self.user.name,
@@ -92,7 +102,7 @@ class MarathonSpawner(Spawner):
             JPY_BASE_URL=self.user.server.base_url,
             JPY_HUB_PREFIX=self.hub.server.base_url,
             JPY_HUB_API_URL = 'http://%s:8081/hub/api'%self.hub_ip_connect,
-            JPY_API_TOKEN=self.api_token
+            #JPY_API_TOKEN=self.api_token
         ))
 
         if len(self.env_url) > 0:
@@ -107,27 +117,29 @@ class MarathonSpawner(Spawner):
         return env
 
     def get_container_name(self):
-        return '/%s-notebook'%self.user.name
+        return '/notebooks/%s-notebook'%self.user.name
 
     @gen.coroutine
     def start(self):
         print('HUB URI:', self.hub.api_url)
         container_name = self.get_container_name()
         hostname, gpu_id = self.gpu_resources.get_host_id(self.user.name)
+        driver_version = self.gpu_resources.get_driver_version(hostname)
         print('Hostname: {} GPU ID: {}'.format(hostname, gpu_id))
         constraint = [['hostname', 'LIKE', hostname]]
         parameters = [{'key':'workdir', 'value':os.path.join(self.home_basepath, self.user.name)}]
         parameters.append({'key': 'device', 'value': '/dev/nvidiactl'})
         parameters.append({'key': 'device', 'value': '/dev/nvidia-uvm'})
+        #parameters.append({'key': 'device', 'value': '/dev/nvidia-uvm-tools'})
         parameters.append({'key': 'device', 'value': '/dev/nvidia%d'%gpu_id})
         parameters.append({'key': 'volume-driver', 'value': 'nvidia-docker'})
-        parameters.append({'key': 'volume', 'value': 'nvidia_driver_367.35:/usr/local/nvidia:ro'})
+        parameters.append({'key': 'volume', 'value': 'nvidia_driver_{}:/usr/local/nvidia:ro'.format(driver_version)})
         cmd = "/bin/bash /srv/ganymede_nbserver/ganymede_nbserver.sh"
         self.marathon.start_container(container_name,
                           self.docker_image_name,
                           cmd,
                           constraints=constraint,
-                          env=self.get_local_env(),
+                          env=self.get_env(),
                           parameters = parameters,
                           mem_limit=self.mem_limit,
                           volumes=self.volumes,
@@ -156,6 +168,7 @@ class MarathonSpawner(Spawner):
     @gen.coroutine
     def get_ip_and_port(self):
         container_name = self.get_container_name()
+        print('IP/PORT: {}'.format(self.marathon.get_ip_and_port(container_name)))
         return self.marathon.get_ip_and_port(container_name)
 
     @gen.coroutine
@@ -166,7 +179,7 @@ class MarathonSpawner(Spawner):
             return ""
 
         if 'tasks' in container_info and len(container_info['tasks']) == 1:
-            print('Container Running')
+            #print('Container Running')
             return None
         else:
             print('Container Not Found')

@@ -111,6 +111,13 @@ class Marathon:
         else:
             raise ValueError(response.text)
 
+    def get_container_env_variable(self, container_name, env_variable):
+        response = self._make_request('GET', 'v2/apps/%s'%container_name)
+        if response.status_code != 200:
+            return None
+        container = response.json()['app']
+        return container['env'][env_variable]
+
     def get_ip_and_port(self, container_name):
         response = self._make_request('GET', 'v2/apps/%s'%container_name)
         if response.status_code != 200:
