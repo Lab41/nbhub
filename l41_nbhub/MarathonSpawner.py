@@ -83,8 +83,6 @@ class MarathonSpawner(Spawner):
             pass
      
     def get_env(self):
-        # TODO: Figure out why superclass call is failing
-        #env = {}
         env = super().get_env()
         env.update(dict(
             # User Info
@@ -179,7 +177,6 @@ class MarathonSpawner(Spawner):
             return ""
 
         if 'tasks' in container_info and len(container_info['tasks']) == 1:
-            #print('Container Running')
             return None
         else:
             print('Container Not Found')
