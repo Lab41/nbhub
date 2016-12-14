@@ -100,7 +100,6 @@ class MarathonSpawner(Spawner):
             JPY_BASE_URL=self.user.server.base_url,
             JPY_HUB_PREFIX=self.hub.server.base_url,
             JPY_HUB_API_URL = 'http://%s:8081/hub/api'%self.hub_ip_connect,
-            #JPY_API_TOKEN=self.api_token
         ))
 
         if len(self.env_url) > 0:
@@ -128,7 +127,6 @@ class MarathonSpawner(Spawner):
         parameters = [{'key':'workdir', 'value':os.path.join(self.home_basepath, self.user.name)}]
         parameters.append({'key': 'device', 'value': '/dev/nvidiactl'})
         parameters.append({'key': 'device', 'value': '/dev/nvidia-uvm'})
-        #parameters.append({'key': 'device', 'value': '/dev/nvidia-uvm-tools'})
         parameters.append({'key': 'device', 'value': '/dev/nvidia%d'%gpu_id})
         parameters.append({'key': 'volume-driver', 'value': 'nvidia-docker'})
         parameters.append({'key': 'volume', 'value': 'nvidia_driver_{}:/usr/local/nvidia:ro'.format(driver_version)})
