@@ -2,9 +2,6 @@
 # OAuth callback
 OAUTH_CALLBACK_URL=
 
-# Docker Swarm host (?)
-DOCKER_HOST=
-
 # GitHub auth
 GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
