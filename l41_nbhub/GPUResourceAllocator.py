@@ -8,7 +8,7 @@ class GPUResourceAllocator:
     Quick and dirty class to manage GPU allocations. Uses flat files which are read at each instance
 
     """
-    def __init__(self, resource_filename, status_filename):
+    def __init__(self, resource_filename, status_filename, allow_oversubscription=True):
         """
         Initialize GPUResourceAllocator
         Args:
@@ -20,6 +20,7 @@ class GPUResourceAllocator:
         """
         self.resource_filename = resource_filename
         self.status_filename = status_filename
+        self.allow_oversubscription = allow_oversubscription
     
     def get_resources(self):
         """
@@ -27,14 +28,23 @@ class GPUResourceAllocator:
         Returns:
             resources: A list of the available resources, tuple of (hostname, number of gpus)
         """
+        self.driver_versions = {}
         resources = []
         with open(self.resource_filename) as input_file:
             for line in input_file:
                 line = line.split()
-                # 0=hostname, 1=number of gpus
+                # 0=hostname, 1=number of gpus, 2=driver version
                 resources.append((line[0], int(line[1])))
+                if len(line) > 1:
+                    self.driver_versions[line[0]] = line[2]
         return resources
-    
+
+    def get_driver_version(self, hostname):
+        if hostname in self.driver_versions:
+            return self.driver_versions[hostname]
+        else:
+            return None
+
     def get_current_allocations(self):
         """
         Get the current state of gpu allocations
