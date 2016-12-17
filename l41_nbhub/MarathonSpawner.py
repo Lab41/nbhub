@@ -27,6 +27,9 @@ class MarathonSpawner(Spawner):
     network_mode = Unicode('BRIDGE',
                          help="Whether to use BRIDGE or HOST netowrking",
                          config=True)
+    marathon_group = Unicode('notebooks',
+                             help="Marathon group name (folder) prefix for container names",
+                             config=True)
     mem_limit = Int(
         4096,
         help='Memory limit in MB',
@@ -114,7 +117,7 @@ class MarathonSpawner(Spawner):
         return env
 
     def get_container_name(self):
-        return '/notebooks/%s-notebook'%self.user.name
+        return '/%s/%s-notebook'%(self.marathon_group, self.user.name)
 
     @gen.coroutine
     def start(self):
